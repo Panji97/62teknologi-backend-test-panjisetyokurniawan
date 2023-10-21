@@ -9,7 +9,7 @@ export interface businessAttributes {
   id: string;
   alias?: string;
   name?: string;
-  image_url?: string;
+  image_url: string;
   is_closed?: number;
   url?: string;
   review_count?: number;
@@ -23,14 +23,14 @@ export interface businessAttributes {
 
 export type businessPk = "id";
 export type businessId = business[businessPk];
-export type businessOptionalAttributes = "alias" | "name" | "image_url" | "is_closed" | "url" | "review_count" | "rating" | "transactions" | "price" | "phone" | "disploy_phone" | "distance";
+export type businessOptionalAttributes = "alias" | "name" | "is_closed" | "url" | "review_count" | "rating" | "transactions" | "price" | "phone" | "disploy_phone" | "distance";
 export type businessCreationAttributes = Optional<businessAttributes, businessOptionalAttributes>;
 
 export class business extends Model<businessAttributes, businessCreationAttributes> implements businessAttributes {
   id!: string;
   alias?: string;
   name?: string;
-  image_url?: string;
+  image_url!: string;
   is_closed?: number;
   url?: string;
   review_count?: number;
@@ -107,7 +107,7 @@ export class business extends Model<businessAttributes, businessCreationAttribut
     },
     image_url: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     is_closed: {
       type: DataTypes.BOOLEAN,

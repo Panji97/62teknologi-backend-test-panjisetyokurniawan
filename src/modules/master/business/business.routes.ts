@@ -13,6 +13,7 @@ export default class BusinessRoutes {
   routes(): Router {
     this.router.post('/v1/create', this.controller.create())
     this.router.get('/v1/show', this.controller.show())
+    this.router.get('/v1/show/:id', this.controller.showDetails())
     this.router.put('/v1/update/:id', this.controller.update())
     this.router.delete('/v1/delete/:id', this.controller.delete())
 

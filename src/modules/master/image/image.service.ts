@@ -24,13 +24,13 @@ export default class ImageService {
         else fs.unlink(oldPath, (err) => {})
       })
 
-      await database.businessimage.create({
+      const result = await database.businessimage.create({
         id: uuidv4(),
         business_id: data.business_id,
         url: `/img/${data.business_id}/${filesName}`,
       })
 
-      return 'Success create image'
+      return result
     } catch (error) {
       throw error
     }

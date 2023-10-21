@@ -1,9 +1,11 @@
 import { Op } from 'sequelize'
 import { v4 as uuidv4 } from 'uuid'
+import _ from 'lodash'
+import path from 'path'
+import fs from 'fs'
 
 import database from '../../../models'
 import { businessAttributes } from '../../../models/business'
-import _ from 'lodash'
 
 export default class BusinessService {
   public async createBusiness(data: businessAttributes) {
@@ -20,10 +22,26 @@ export default class BusinessService {
         return 'Duplicate Business'
       }
 
+      const fileExtension = path.extname(data.image_url)
+      const id = uuidv4()
+      const filesName = `${id}${fileExtension}`
+
+      const oldPath = path.join(__dirname, '../../../../public' + data.image_url)
+      const newPath = path.join(__dirname, `../../../../public/img/` + filesName)
+      const dir = path.join(__dirname, `../../../../public/img`)
+
+      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
+
+      fs.rename(oldPath, newPath, async (err) => {
+        if (err) throw err
+        else fs.unlink(oldPath, (err) => {})
+      })
+
       const newBusiness = await database.business.create({
         ...data,
         id: uuidv4(),
         alias: dataAlias,
+        image_url: `/img/${filesName}`,
       })
 
       return newBusiness

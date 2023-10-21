@@ -27,7 +27,24 @@ export default class BusinessControllers extends ErrorHandler {
       try {
         const { limit = 10, page = 1, search, sort } = req.query
 
-        const RESULT = await this.service.showBusiness(Number(limit), Number(page), search, sort)
+        const RESULT = await this.service.showBusiness(
+          Number(limit),
+          Number(page),
+          search,
+          sort
+        )
+
+        return res.status(200).json({ message: true, result: RESULT })
+      } catch (error) {
+        this.handleError(error, req, res)
+      }
+    }
+  }
+
+  public showDetails() {
+    return async (req: Request, res: Response) => {
+      try {
+        const RESULT = await this.service.showBusinessDetail(req.params.id)
 
         return res.status(200).json({ message: true, result: RESULT })
       } catch (error) {
@@ -39,7 +56,10 @@ export default class BusinessControllers extends ErrorHandler {
   public update() {
     return async (req: Request, res: Response) => {
       try {
-        const RESULT = await this.service.updateBusiness(req.body, req.params.id)
+        const RESULT = await this.service.updateBusiness(
+          req.body,
+          req.params.id
+        )
 
         return res.status(200).json({ message: true, result: RESULT })
       } catch (error) {
