@@ -42,11 +42,11 @@ export class businesscoordinate extends Model<businesscoordinateAttributes, busi
       }
     },
     latitude: {
-      type: DataTypes.FLOAT(10,6),
+      type: DataTypes.FLOAT,
       allowNull: true
     },
     longitude: {
-      type: DataTypes.FLOAT(10,6),
+      type: DataTypes.FLOAT,
       allowNull: true
     }
   }, {

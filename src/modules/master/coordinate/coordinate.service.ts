@@ -6,9 +6,22 @@ import { businesscoordinateAttributes } from '../../../models/businesscoordinate
 export default class CoordinateService {
   public async createCoordinate(data: businesscoordinateAttributes) {
     try {
-      await database.businesscoordinate.create({ ...data, id: uuidv4() })
+      const result = await database.businesscoordinate.create({
+        ...data,
+        id: uuidv4(),
+      })
 
-      return 'Success create coordinate'
+      return result
+    } catch (error) {
+      throw error
+    }
+  }
+
+  public async showCoordinate() {
+    try {
+      const result = await database.businesscoordinate.findAll()
+
+      return result
     } catch (error) {
       throw error
     }

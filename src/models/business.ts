@@ -19,11 +19,12 @@ export interface businessAttributes {
   phone?: string;
   disploy_phone?: string;
   distance?: string;
+  desc?: string;
 }
 
 export type businessPk = "id";
 export type businessId = business[businessPk];
-export type businessOptionalAttributes = "alias" | "name" | "is_closed" | "url" | "review_count" | "rating" | "transactions" | "price" | "phone" | "disploy_phone" | "distance";
+export type businessOptionalAttributes = "alias" | "name" | "is_closed" | "url" | "review_count" | "rating" | "transactions" | "price" | "phone" | "disploy_phone" | "distance" | "desc";
 export type businessCreationAttributes = Optional<businessAttributes, businessOptionalAttributes>;
 
 export class business extends Model<businessAttributes, businessCreationAttributes> implements businessAttributes {
@@ -40,6 +41,7 @@ export class business extends Model<businessAttributes, businessCreationAttribut
   phone?: string;
   disploy_phone?: string;
   distance?: string;
+  desc?: string;
 
   // business hasMany businesscategory via business_id
   businesscategories!: businesscategory[];
@@ -142,6 +144,10 @@ export class business extends Model<businessAttributes, businessCreationAttribut
       allowNull: true
     },
     distance: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    desc: {
       type: DataTypes.STRING(255),
       allowNull: true
     }

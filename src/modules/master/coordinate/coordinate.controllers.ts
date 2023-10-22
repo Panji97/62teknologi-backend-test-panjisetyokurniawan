@@ -21,4 +21,16 @@ export default class CoordinateController extends ErrorHandler {
       }
     }
   }
+
+  public show() {
+    return async (req: Request, res: Response) => {
+      try {
+        const RESULT = await this.service.showCoordinate()
+
+        return res.status(200).json({ message: true, result: RESULT })
+      } catch (error) {
+        this.handleError(error, req, res)
+      }
+    }
+  }
 }

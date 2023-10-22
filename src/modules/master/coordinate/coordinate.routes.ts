@@ -12,6 +12,7 @@ export default class CoordinateRoutes {
 
   routes(): Router {
     this.router.post('/v1/create', this.controller.create())
+    this.router.get('/v1/show', this.controller.show())
 
     return this.router
   }

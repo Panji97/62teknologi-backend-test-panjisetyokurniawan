@@ -25,12 +25,21 @@ export default class BusinessControllers extends ErrorHandler {
   public show() {
     return async (req: Request, res: Response) => {
       try {
-        const { limit = 10, page = 1, search, sort } = req.query
+        const {
+          limit = 10,
+          page = 1,
+          search,
+          category,
+          location,
+          sort,
+        } = req.query
 
         const RESULT = await this.service.showBusiness(
           Number(limit),
           Number(page),
           search,
+          category,
+          location,
           sort
         )
 

@@ -26,8 +26,14 @@ export default class BusinessService {
       const id = uuidv4()
       const filesName = `${id}${fileExtension}`
 
-      const oldPath = path.join(__dirname, '../../../../public' + data.image_url)
-      const newPath = path.join(__dirname, `../../../../public/img/` + filesName)
+      const oldPath = path.join(
+        __dirname,
+        '../../../../public' + data.image_url
+      )
+      const newPath = path.join(
+        __dirname,
+        `../../../../public/img/` + filesName
+      )
       const dir = path.join(__dirname, `../../../../public/img`)
 
       if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true })
@@ -50,7 +56,14 @@ export default class BusinessService {
     }
   }
 
-  public async showBusiness(limit: number, page: number, search?: any, sort?: any) {
+  public async showBusiness(
+    limit: number,
+    page: number,
+    search?: any,
+    category?: any,
+    location?: any,
+    sort?: any
+  ) {
     try {
       const offset = (page - 1) * limit
 
@@ -79,19 +92,53 @@ export default class BusinessService {
 
       if (search) {
         queryOptions.where = {
-          [Op.or]: [
-            { name: { [Op.like]: `%${search}%` } },
-            { is_closed: { [Op.like]: `%${search}%` } },
-            { rating: { [Op.like]: `%${search}%` } },
-            { transactions: { [Op.like]: `%${search}%` } },
-            { price: { [Op.like]: `%${search}%` } },
-            { phone: { [Op.like]: `%${search}%` } },
-            { disploy_phone: { [Op.like]: `%${search}%` } },
-            { distance: { [Op.like]: `%${search}%` } },
-            { '$businesscategories.title$': { [Op.like]: `%${search}%` } },
-            { '$businesslocations.city$': { [Op.like]: `%${search}%` } },
-          ],
+          name: {
+            [Op.like]: `%${search}%`,
+          },
         }
+      }
+
+      if (category) {
+        queryOptions.include.push({
+          model: database.businesscategory,
+          as: 'businesscategories',
+          where: {
+            title: {
+              [Op.like]: `%${category}%`,
+            },
+          },
+        })
+      }
+
+      if (location) {
+        queryOptions.include.push({
+          model: database.businesslocation,
+          as: 'businesslocations',
+          where: {
+            [Op.or]: [
+              {
+                address1: {
+                  [Op.like]: `%${location}%`,
+                },
+              },
+              {
+                city: {
+                  [Op.like]: `%${location}%`,
+                },
+              },
+              {
+                country: {
+                  [Op.like]: `%${location}%`,
+                },
+              },
+              {
+                state: {
+                  [Op.like]: `%${location}%`,
+                },
+              },
+            ],
+          },
+        })
       }
 
       if (sort) {
@@ -102,7 +149,9 @@ export default class BusinessService {
         }
       }
 
-      const { count, rows } = await database.business.findAndCountAll(queryOptions)
+      const { count, rows } = await database.business.findAndCountAll(
+        queryOptions
+      )
 
       const totalData = count
       const totalPage = Math.ceil(totalData / limit)
@@ -141,7 +190,10 @@ export default class BusinessService {
 
   public async updateBusiness(data: businessAttributes, paramsId: string) {
     try {
-      return await database.business.update({ ...data }, { where: { id: paramsId } })
+      return await database.business.update(
+        { ...data },
+        { where: { id: paramsId } }
+      )
     } catch (error) {
       throw error
     }
