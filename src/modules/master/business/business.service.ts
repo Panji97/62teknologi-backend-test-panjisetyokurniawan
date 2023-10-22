@@ -92,9 +92,18 @@ export default class BusinessService {
 
       if (search) {
         queryOptions.where = {
-          name: {
-            [Op.like]: `%${search}%`,
-          },
+          [Op.or]: [
+            {
+              name: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+            {
+              price: {
+                [Op.like]: `%${search}%`,
+              },
+            },
+          ],
         }
       }
 
